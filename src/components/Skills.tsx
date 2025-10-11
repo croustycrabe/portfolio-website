@@ -8,17 +8,17 @@ interface Skill {
 }
 
 const skillsData: Skill[] = [  
-  { name: 'Tensorflow', level: 2, category: 'Frameworks & Librairies' },
-  { name: 'Pytorch', level: 2, category: 'Frameworks & Librairies' },
+  { name: 'Tensorflow', level: 3, category: 'Frameworks & Librairies' },
+  { name: 'Pytorch', level: 3, category: 'Frameworks & Librairies' },
   { name: 'Django', level: 3, category: 'Frameworks & Librairies' },
-  { name: 'SocketIO', level: 3, category: 'Frameworks & Librairies' },
-  { name: 'React', level: 2, category: 'Frameworks & Librairies' },
-  { name: 'Arduino', level: 2, category: 'Frameworks & Librairies' },
-  { name: 'Python', level: 4, category: 'Language' },
-  { name: 'Flutter (Dart)', level: 3, category: 'Language' },
-  { name: 'Ignition', level: 2, category: 'Industry' },
+  { name: 'SocketIO', level: 4, category: 'Frameworks & Librairies' },
+  { name: 'React', level: 3, category: 'Frameworks & Librairies' },
+  { name: 'Arduino', level: 3, category: 'Frameworks & Librairies' },
+  { name: 'Python', level: 5, category: 'Language' },
+  { name: 'Flutter (Dart)', level: 4, category: 'Language' },
+  { name: 'Ignition', level: 3, category: 'Industry' },
   { name: 'KepWare', level: 2, category: 'Industry' },
-  { name: 'Rust', level: 3, category: 'Language' },
+  { name: 'Rust', level: 4, category: 'Language' },
   { name: 'C++', level: 2, category: 'Language' },
   { name: 'Figma', level: 4, category: 'Design' },
   { name: 'Lunacy', level: 4, category: 'Design' },
@@ -55,32 +55,39 @@ export function Skills() {
           <p className="text-muted-foreground">{t('skills.subtitle')}</p>
         </div>
 
-        {/* Rating System Legend */}
         <div className="mb-12 bg-[#FBFDFF]/5 border border-[#2F6B7C]/20 rounded-xl p-6 max-w-4xl mx-auto shadow-lg">
-          <h3 className="text-[#2F6B7C] mb-4">{t('skills.rating.title')}</h3>
-          <div className="space-y-3">
-            {[1, 2, 3, 4, 5].map((level) => (
-              <div key={level} className="flex items-start gap-3">
-                <div className="flex gap-1 mt-0.5 flex-shrink-0">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={14}
-                      className={`${
-                        star <= level
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'fill-none text-muted-foreground'
-                      }`}
-                    />
-                  ))}
+          <h3 className="text-[#2F6B7C] mb-6">{t('skills.rating.title')}</h3>
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((level) => {
+              return (
+                <div key={level} className="flex items-start gap-4">
+                  <div className="flex items-center gap-3 min-w-[200px]">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={14}
+                          className={`${
+                            star <= level
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'fill-none text-muted-foreground'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-foreground">
+                      {t(`skills.rating.${level}.name`)}
+                    </span>
+                  </div>
+                  <p className="text-foreground/70 text-sm leading-relaxed flex-1">
+                    {t(`skills.rating.${level}.desc`)}
+                  </p>
                 </div>
-                <p className="text-foreground/80 text-sm leading-relaxed">
-                  {t(`skills.rating.${level}`)}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
+
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category) => (

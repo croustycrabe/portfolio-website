@@ -1,9 +1,11 @@
 import { MapPin, Download } from 'lucide-react';
 import { useI18n } from '../contexts/i18n-context';
 import { Button } from './ui/button';
+import cv_fr from "../assets/files/cv_auguste_lacheteau_fr.pdf";
+import cv_en from "../assets/files/cv_auguste_lacheteau_en.pdf";
 
 export function Hero() {
-  const { t } = useI18n();
+  const { language, setLanguage, t } = useI18n();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -72,8 +74,9 @@ export function Hero() {
                   </div>
                   
                   <a 
-                    href="/cv.pdf" 
-                    download="Auguste_Lacheteau_CV.pdf"
+                    href={language === 'fr' ? cv_fr:cv_en}
+                     rel="noreferrer"
+                    target="_blank" 
                     className="flex items-center gap-3 p-3 bg-gradient-to-r from-[#8BC4D4]/5 to-transparent rounded-lg border border-[#8BC4D4]/20 hover:border-[#8BC4D4] hover:from-[#8BC4D4]/10 transition-all cursor-pointer group"
                   >
                     <div className="w-10 h-10 bg-[#8BC4D4] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
