@@ -1,127 +1,153 @@
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react';
+import { BriefcaseIcon, GraduationCapIcon, MapPinIcon, TrophyIcon, UsersThreeIcon, type Icon } from '@phosphor-icons/react';
 import { useI18n } from '../contexts/i18n-context';
-import { Briefcase, GraduationCap } from 'lucide-react';
+import { journey, type JourneyType } from '../data/content';
+import { Chip, SectionHeading } from './primitives';
+import JourneyIllustration from '../assets/illustrations/journey.svg?react';
 
-interface TimelineItem {
-  type: 'work' | 'education';
-  title: { fr: string; en: string };
-  organization: string;
-  period: string;
-  description: { fr: string; en: string };
-  location: string;
-}
+const typeIcon: Record<JourneyType, Icon> = {
+  work: BriefcaseIcon,
+  education: GraduationCapIcon,
+  extra: UsersThreeIcon,
+};
 
-const timelineData: TimelineItem[] = [
-  {
-    type: 'work',
-    title: { fr: 'Apprenti ingénieur', en: 'Engineering apprentice' },
-    organization: 'Saft',
-    period: '2023 - 2025',
-    description: {
-      fr: "Alternant ingénieur. Développement et installation de systèmes de vision sur les lignes de production. Création d'interface utilisateur (Flutter et API Websocket en Python) ainsi que de programme de traitement d'image avec Python et les librairies OpenCV et TensorFlow.",
-      en: "Alternating engineer. Development and installation of vision systems on production lines. Creation of user interface (Flutter and Websocket API in Python) as well as image processing program with Python and the OpenCV and TensorFlow libraries.",
-    },
-    location: 'Poitiers, France',
-  },
-  {
-    type: 'work',
-    title: { fr: 'Mobilité internationale', en: 'International mobility' },
-    organization: 'Saft',
-    period: '2025',
-    description: {
-      fr: "Échange avec l'équipe industrielle sur un autre site de mon entreprise. Apport de mes compétences en développement logiciel et apprentissage de l'utilisation de systèmes automatisés (Automate Siemens, plateforme KepWare)",
-      en: "Exchange with the industrial team on another site of my company. Contribution of my skills in software development and learning the use of automated systems (Siemens automation, KepWare platform)",
-    },
-    location: 'Oskarsahmn, Sweden',
-  },
-  
-  {
-    type: 'education',
-    title: { fr: 'Diplôme d\'Ingénieur Informatique', en: 'Computer Science Engineering Degree' },
-    organization: 'Polytech',
-    period: '2023 - 2025',
-    description: {
-      fr: "Diplôme d'ingénieur en Informatique Automatique Robotique et Réseau en apprentissage.",
-      en: 'Diploma of Engineer in Automatic Computing, Robotics and Network in learning.',
-    },
-    location: 'Nancy, France',
-  },
-  {
-    type: 'work',
-    title: { fr: 'Stagiaire', en: 'Intern' },
-    organization: 'CEA',
-    period: '2023',
-    description: {
-      fr: "Stage de fin d'études (DUT). Conception d'un banc de calibration de caméra pour l'imagerie LASER. Création de différents exécutables en Python avec Tkinter et OpenCV.",
-      en: "Final year internship (DUT). Design of a camera calibration bench for LASER imaging. Creation of different executables in Python with Tkinter and OpenCV.",
-    },
-    location: 'Gramat, France',
-  },
-  {
-    type: 'education',
-    title: { fr: 'DUT Mesures Physique', en: 'Computer Science Associate Degree' },
-    organization: 'IUT',
-    period: '2021 - 2023',
-    description: {
-      fr: "DUT mesures physiques, spécialité technique d'instrumentation. Formation scientifique généraliste et technique sur différents domaines tels que l'électronique, la mécanique des solides ou encore la chimie des matériaux.",
-      en: "DUT physical measures, technical specialty of instrumentation. General scientific and technical training in different fields such as electronics, solid mechanics, or even material chemistry.",
-    },
-    location: 'Blois, France',
-  },
-];
+const filters = ['all', 'work', 'education', 'extra'] as const;
+type Filter = (typeof filters)[number];
 
 export function Timeline() {
-  const { language, t } = useI18n();
+  const { l, t } = useI18n();
+  const [filter, setFilter] = useState<Filter>('all');
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 75%', 'end 60%'] });
+  const lineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 25 });
+
+  const items = journey.filter((item) => filter === 'all' || item.type === filter);
 
   return (
-    <section id="journey" className="py-20 px-4 bg-secondary/30">
-      <div className="container mx-auto max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-[#2F6B7C] libre-bodoni-regular mb-2">{t('journey.title')}</h2>
-          <p className="text-muted-foreground">{t('journey.subtitle')}</p>
+    <section id="journey" className="relative px-4 py-24 md:py-32" aria-labelledby="journey-title">
+      {/* Grid on the outer edges only, fading towards the content */}
+      <div
+        aria-hidden="true"
+        className="bg-grid pointer-events-none absolute inset-0 mask-[linear-gradient(to_right,black,transparent_22%,transparent_78%,black)]"
+      />
+      <div className="relative mx-auto max-w-5xl">
+        <SectionHeading
+          id="journey-title"
+          index="01"
+          label={t('journey.label')}
+          title={t('journey.title')}
+          subtitle={t('journey.subtitle')}
+          Illustration={JourneyIllustration}
+        />
+        <div className="mb-12 flex flex-wrap gap-3" role="group" aria-label={t('journey.title')}>
+          {filters.map((f) => (
+            <Chip key={f} active={filter === f} onClick={() => setFilter(f)}>
+              {t(`journey.filter.${f}`)}
+            </Chip>
+          ))}
         </div>
 
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+          {/* Track + scroll-driven fill */}
+          <div aria-hidden="true" className="absolute top-0 bottom-0 left-6 w-1 -translate-x-1/2 bg-ink/10 md:left-1/2" />
+          <motion.div
+            aria-hidden="true"
+            style={{ scaleY: lineScale }}
+            className="absolute top-0 bottom-0 left-6 w-1 origin-top -translate-x-1/2 bg-primary md:left-1/2"
+          />
 
-          {/* Timeline items */}
-          <div className="space-y-12">
-            {timelineData.map((item, index) => (
-              <div
-                key={index}
-                className={`relative flex flex-col md:flex-row gap-8 ${
-                  index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                }`}
-              >
-                {/* Icon */}
-                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-[#F6FAFE] border-4 border-primary flex items-center justify-center z-10">
-                  {item.type === 'work' ? (
-                    <Briefcase className="text-primary" size={24} />
-                  ) : (
-                    <GraduationCap className="text-primary" size={24} />
-                  )}
-                </div>
+          <ol ref={listRef} className="relative space-y-10">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {items.map((item, index) => {
+                const Icon = typeIcon[item.type];
+                const left = index % 2 === 0;
+                const year = l(item.period).match(/\d{4}/)?.[0];
+                return (
+                  <motion.li
+                    layout
+                    key={l(item.title)}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative md:grid md:grid-cols-2 md:gap-16"
+                  >
+                    <motion.div
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.8 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute top-4 left-6 z-10 grid size-12 -translate-x-1/2 place-items-center rounded-brutal-sm border-2 border-ink bg-primary text-primary-fg shadow-brutal-md md:left-1/2"
+                    >
+                      <Icon size={24} weight="bold" />
+                    </motion.div>
 
-                {/* Spacer for desktop */}
-                <div className="hidden md:block md:w-1/2"></div>
-
-                {/* Content */}
-                <div className={`md:w-1/2 ml-24 md:ml-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                  <div className="bg-card p-6 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3>{item.title[language]}</h3>
-                      <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
-                        {item.period}
+                    {/* Large outlined year in the empty half of the row (desktop) */}
+                    <motion.div
+                      aria-hidden="true"
+                      initial={{ opacity: 0, x: left ? 30 : -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.5 }}
+                      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                      className={`hidden select-none pt-2 md:row-start-1 md:flex md:flex-col ${
+                        left ? 'md:col-start-2 md:items-start' : 'md:col-start-1 md:items-end'
+                      }`}
+                    >
+                      <span className="font-display text-8xl leading-none text-transparent [-webkit-text-stroke:2px_rgb(27_33_37/0.18)] lg:text-9xl">
+                        {year}
                       </span>
-                    </div>
-                    <h4 className="text-primary mb-1">{item.organization}</h4>
-                    <p className="text-xs text-muted-foreground mb-3">{item.location}</p>
-                    <p className="text-sm text-muted-foreground">{item.description[language]}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                      <span className={`mt-3 flex items-center gap-3 text-xs font-bold tracking-[0.2em] text-ink/35 uppercase ${left ? '' : 'flex-row-reverse'}`}>
+                        <span className="h-0.5 w-10 bg-ink/25" />
+                        {item.organization}
+                      </span>
+                    </motion.div>
+
+                    <motion.article
+                      initial={{ opacity: 0, x: left ? -24 : 24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      className={`ml-16 rounded-brutal-md border-2 border-ink bg-surface p-6 shadow-brutal-lg md:row-start-1 md:ml-0 ${
+                        left ? 'md:col-start-1' : 'md:col-start-2'
+                      }`}
+                    >
+                      <div className="mb-3 flex flex-wrap items-center gap-2">
+                        <span className="rounded-brutal-sm border-2 border-ink bg-ink px-2 py-0.5 text-xs font-bold text-cream">
+                          {l(item.period)}
+                        </span>
+                        <span className="text-xs tracking-wider text-muted-fg uppercase">
+                          {t(`journey.filter.${item.type}`)}
+                        </span>
+                      </div>
+                      <h3 className="text-lg leading-snug md:text-xl">{l(item.title)}</h3>
+                      <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+                        <span className="font-bold text-primary">{item.organization}</span>
+                        <span className="inline-flex items-center gap-1 text-muted-fg">
+                          <MapPinIcon size={14} weight="bold" />
+                          {l(item.location)}
+                        </span>
+                      </p>
+                      <ul className="mt-4 space-y-1.5 text-sm text-fg/80">
+                        {item.bullets.map((b) => (
+                          <li key={l(b)} className="flex gap-2">
+                            <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 bg-primary" />
+                            {l(b)}
+                          </li>
+                        ))}
+                      </ul>
+                      {item.highlight && (
+                        <p className="mt-4 inline-flex items-center gap-2 rounded-brutal-sm border-2 border-ink bg-surface-2 px-3 py-1 text-sm font-bold">
+                          <TrophyIcon size={16} weight="fill" className="text-primary" />
+                          {l(item.highlight)}
+                        </p>
+                      )}
+                    </motion.article>
+                  </motion.li>
+                );
+              })}
+            </AnimatePresence>
+          </ol>
         </div>
       </div>
     </section>

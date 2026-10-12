@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# Auguste Lacheteau · Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Personal portfolio in the CroustyLab neo-brutalist style (Rubik One + Roboto Mono, brick / cream / ink palette).
 
-## Available Scripts
+**Stack:** React 19 · Vite · Tailwind CSS v4 · Motion · Phosphor Icons · unDraw illustrations
 
-In the project directory, you can run:
+## Scripts
 
-### `npm start`
+| Command             | What it does                                                        |
+| ------------------- | ------------------------------------------------------------------- |
+| `npm run dev`       | Dev server on http://localhost:5173                                 |
+| `npm run build`     | Typecheck, build, then prerender static HTML into `dist/`           |
+| `npm run preview`   | Serve the production build locally                                  |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How it's organised
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- `src/data/site.ts`: name, email, phone, social links, site URL
+- `src/data/content.ts`: timeline, skills, projects (FR/EN)
+- `src/i18n/translations.ts`: all UI text (FR/EN)
+- `src/assets/illustrations/`: unDraw SVGs, recoloured through CSS variables (`--ill-*`) so they follow light/dark theme
+- `src/seo/head.ts`: title, meta, canonical, hreflang, Open Graph, JSON-LD
 
-### `npm test`
+## SEO
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`npm run build` prerenders real HTML for each page, so crawlers don't need JavaScript:
 
-### `npm run build`
+- `/` (French, default) and `/en/` (English), linked with `hreflang`
+- `/404.html` (`noindex`, served with a real 404 status by nginx)
+- `sitemap.xml` and `robots.txt`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The public URL comes from `VITE_SITE_URL` (default `https://portfolio-auguste-lacheteau.vercel.app`):
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+VITE_SITE_URL=https://my-domain.fr npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Docker
 
-### `npm run eject`
+```sh
+docker build -t portfolio --build-arg SITE_URL=https://my-domain.fr .
+docker run -d -p 8080:8080 --name portfolio portfolio
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The image is a multi-stage build: Node builds the site, then unprivileged nginx serves it on port **8080**.
+nginx handles gzip, immutable caching for `/assets/`, security headers and the 404 page (see `docker/`).

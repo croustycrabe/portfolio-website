@@ -1,83 +1,129 @@
-import { Github, Linkedin, Mail, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import {
+  ArrowUpRightIcon,
+  CheckIcon,
+  CopyIcon,
+  EnvelopeSimpleIcon,
+  GithubLogoIcon,
+  LinkedinLogoIcon,
+  PaperPlaneTiltIcon,
+  PhoneIcon,
+  type Icon,
+} from '@phosphor-icons/react';
 import { useI18n } from '../contexts/i18n-context';
+import { links, person } from '../data/site';
+import { ButtonLink, Reveal, SectionHeading } from './primitives';
+import ContactIllustration from '../assets/illustrations/contact.svg?react';
+
+function ContactCard({
+  href,
+  icon: Icon,
+  label,
+  value,
+  external,
+}: {
+  href: string;
+  icon: Icon;
+  label: string;
+  value: string;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer me' } : {})}
+      className="press group flex items-center gap-4 rounded-brutal-md border-2 border-ink bg-surface p-4 hover:bg-cream"
+    >
+      <span className="grid size-12 shrink-0 place-items-center rounded-brutal-sm border-2 border-ink bg-ink text-cream">
+        <Icon size={22} weight="bold" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs text-muted-fg">{label}</span>
+        <span className="block truncate font-bold">{value}</span>
+      </span>
+      <ArrowUpRightIcon size={20} weight="bold" className="shrink-0 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </a>
+  );
+}
 
 export function Contact() {
   const { t } = useI18n();
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(person.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${person.email}`;
+    }
+  };
 
   return (
-    <section id="contact" className="py-20 px-4 bg-gradient-to-b from-background to-[#2F6B7C]/5">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-[#2F6B7C] libre-bodoni-regular mb-4">{t('contact.title')}</h2>
-          <p className="text-foreground/70 max-w-2xl mx-auto">
-            {t('contact.subtitle')}
-          </p>
-        </div>
+    <section id="contact" className="relative px-4 py-24 md:py-32" aria-labelledby="contact-title">
+      {/* Diagonal hatching fading out towards the footer */}
+      <div aria-hidden="true" className="bg-hatch pointer-events-none absolute inset-0 mask-[linear-gradient(to_bottom,black,transparent_85%)]" />
+      <div className="relative mx-auto max-w-6xl">
+        <SectionHeading
+          id="contact-title"
+          index="04"
+          label={t('contact.label')}
+          title={t('contact.title')}
+          subtitle={t('contact.subtitle')}
+        />
 
-        <div className="max-w-3xl mx-auto space-y-8">
-          {/* Contact Information */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
-            <h3 className="text-[#2F6B7C] mb-6">{t('contact.getInTouch')}</h3>
-            
-            <div className="space-y-4">
-              {/* Phone */}
-              <a
-                href="tel:+33769082527"
-                className="flex items-center gap-4 p-4 bg-gradient-to-r from-[#2F6B7C]/5 to-transparent rounded-lg border border-[#2F6B7C]/20 hover:border-[#2F6B7C]/40 transition-all group"
-              >
-                <div className="w-12 h-12 bg-[#2F6B7C] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                  <Phone className="text-white" size={20} />
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/60">Téléphone</p>
-                  <p className="text-foreground">+33 7 69 08 25 27</p>
-                </div>
-              </a>
-
-              {/* Email */}
-              <a
-                href="mailto:lacheteaua@gmail.com"
-                className="flex items-center gap-4 p-4 bg-gradient-to-r from-[#8BC4D4]/5 to-transparent rounded-lg border border-[#8BC4D4]/20 hover:border-[#8BC4D4]/40 transition-all group"
-              >
-                <div className="w-12 h-12 bg-[#8BC4D4] rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                  <Mail className="text-white" size={20} />
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/60">Email</p>
-                  <p className="text-foreground break-all">lacheteaua@gmail.com</p>
-                </div>
-              </a>
+        <Reveal className="grid overflow-hidden rounded-brutal-lg border-2 border-ink bg-primary shadow-brutal-xl lg:grid-cols-[1.1fr_1fr]">
+          {/* Call to action */}
+          <div className="flex flex-col justify-between gap-10 border-b-2 border-ink p-6 text-cream sm:p-8 md:p-12 lg:border-r-2 lg:border-b-0">
+            <div>
+              <p className="font-display text-2xl leading-tight sm:text-3xl md:text-4xl">{t('contact.pitch')}</p>
+              <p className="mt-5 max-w-md leading-relaxed text-cream/85">{t('contact.pitchText')}</p>
+            </div>
+            <div className="flex flex-wrap items-end justify-between gap-8">
+              <div className="flex flex-wrap gap-3">
+                <ButtonLink href={`mailto:${person.email}`} variant="cream">
+                  <PaperPlaneTiltIcon size={20} weight="bold" />
+                  {t('contact.cta')}
+                </ButtonLink>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  aria-label={t('contact.copy')}
+                  title={t('contact.copy')}
+                  className="press relative grid size-12.5 place-items-center rounded-brutal-sm border-2 border-ink bg-cream text-ink hover:bg-surface"
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={copied ? 'ok' : 'copy'}
+                      initial={{ scale: 0.4, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.4, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      {copied ? <CheckIcon size={20} weight="bold" /> : <CopyIcon size={20} weight="bold" />}
+                    </motion.span>
+                  </AnimatePresence>
+                  <span role="status" className="sr-only">
+                    {copied ? t('contact.copied') : ''}
+                  </span>
+                </button>
+              </div>
+              <div className="hidden w-40 rounded-brutal-md border-2 border-ink bg-surface p-3 sm:block">
+                <ContactIllustration aria-hidden="true" className="w-full" />
+              </div>
             </div>
           </div>
 
-          {/* Social Networks */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
-            <h3 className="text-[#2F6B7C] mb-6">{t('contact.social')}</h3>
-            
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/avagst3"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#2F6B7C]/5 to-transparent rounded-lg border border-[#2F6B7C]/20 hover:border-[#2F6B7C]/40 hover:scale-105 transition-all"
-                aria-label="GitHub"
-              >
-                <Github className="text-[#2F6B7C]" size={24} />
-                <span className="text-foreground/80">GitHub</span>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/auguste-lacheteau-790419239"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#8BC4D4]/5 to-transparent rounded-lg border border-[#8BC4D4]/20 hover:border-[#8BC4D4]/40 hover:scale-105 transition-all"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="text-[#8BC4D4]" size={24} />
-                <span className="text-foreground/80">LinkedIn</span>
-              </a>
-            </div>
+          {/* Channels */}
+          <div className="flex flex-col justify-center gap-5 p-6 sm:p-8 md:p-12">
+            <ContactCard href={`mailto:${person.email}`} icon={EnvelopeSimpleIcon} label={t('contact.email')} value={person.email} />
+            <ContactCard href={`tel:${person.phone}`} icon={PhoneIcon} label={t('contact.phone')} value={person.phoneDisplay} />
+            <ContactCard href={links.linkedin} icon={LinkedinLogoIcon} label="LinkedIn" value={person.fullName} external />
+            <ContactCard href={links.github} icon={GithubLogoIcon} label="GitHub" value={links.github.replace('https://', '')} external />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
