@@ -1,7 +1,7 @@
 // Single source of truth for personal info & links (used by UI, SEO and JSON-LD).
 
 export const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || 'https://portfolio-auguste-lacheteau.vercel.app'
+  import.meta.env.VITE_SITE_URL || 'https://augustelacheteau.dev'
 ).replace(/\/+$/, '');
 
 export const person = {

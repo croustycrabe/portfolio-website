@@ -1,0 +1,14 @@
+// Cloudflare Workers static-assets deployment.
+// The site is fully prerendered by `npm run build`, so no Worker code or
+// Vite plugin is needed: wrangler only uploads the `dist/` folder.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio-website",
+  "compatibility_date": "2026-10-06",
+  "assets": {
+    "directory": "./dist",
+    // Serve the prerendered dist/404.html with a real 404 status (better for SEO
+    // than falling back to index.html).
+    "not_found_handling": "404-page"
+  }
+}

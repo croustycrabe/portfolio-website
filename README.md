@@ -31,13 +31,13 @@ Personal portfolio in the CroustyLab neo-brutalist style (Rubik One + Roboto Mon
 The public URL comes from `VITE_SITE_URL` (default `https://portfolio-auguste-lacheteau.vercel.app`):
 
 ```sh
-VITE_SITE_URL=https://my-domain.fr npm run build
+VITE_SITE_URL=https://augustelacheteau.dev npm run build
 ```
 
 ## Docker
 
 ```sh
-docker build -t portfolio --build-arg SITE_URL=https://my-domain.fr .
+docker build -t portfolio --build-arg SITE_URL=https://augustelacheteau.dev .
 docker run -d -p 8080:8080 --name portfolio portfolio
 ```
 
