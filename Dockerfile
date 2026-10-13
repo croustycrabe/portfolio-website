@@ -10,7 +10,7 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 # Public URL of the site, used for canonical links, Open Graph, sitemap.xml
 # and JSON-LD. Override with: docker build --build-arg SITE_URL=https://example.com .
-ARG SITE_URL=https://portfolio-auguste-lacheteau.vercel.app
+ARG SITE_URL=https://augustelacheteau.dev
 ENV VITE_SITE_URL=$SITE_URL
 RUN npm run build
 
