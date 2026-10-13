@@ -1,19 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App, { type Page } from './App';
+import { languageFromPath } from './contexts/i18n-context';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const { pathname } = window.location;
+const isHome = /^\/(en\/?)?(index\.html)?$/.test(pathname);
+const page: Page = isHome ? 'home' : 'not-found';
+// The 404 page is prerendered in French, so hydrate it in French too.
+const language = isHome ? languageFromPath(pathname) : 'fr';
+
+const container = document.getElementById('root')!;
+const app = (
+  <StrictMode>
+    <App language={language} page={page} />
+  </StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Production pages are prerendered (see scripts/prerender.js): hydrate them.
+if (container.firstElementChild) {
+  hydrateRoot(container, app);
+} else {
+  createRoot(container).render(app);
+}

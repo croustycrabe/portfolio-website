@@ -1,0 +1,208 @@
+export type Language = 'fr' | 'en';
+export type Localized = Record<Language, string>;
+
+const fr = {
+  'seo.title': 'Auguste Lacheteau | Ingénieur, chef de projet MES, SI & OT',
+  'seo.description':
+    "Auguste Lacheteau, ingénieur diplômé de Polytech Nancy, chef de projet MES, SI & OT chez Saft Poitiers (consultant Akkodis) : standard Ignition, architecture logicielle, modèle de données, infrastructure Linux et Docker.",
+  'seo.jobTitle': 'Chef de projet MES, SI & OT',
+  'seo.notFoundTitle': 'Page introuvable | Auguste Lacheteau',
+
+  'a11y.skip': 'Aller au contenu',
+  'a11y.menu': 'Ouvrir le menu',
+  'a11y.closeMenu': 'Fermer le menu',
+  'a11y.language': 'Changer de langue',
+  'a11y.backToTop': 'Retour en haut',
+  'a11y.home': 'Accueil',
+
+  'nav.journey': 'parcours',
+  'nav.skills': 'compétences',
+  'nav.projects': 'projets',
+  'nav.contact': 'contact',
+
+  'hero.status': 'Consultant Akkodis · DSI de Saft Poitiers',
+  'hero.title': 'Ingénieur · Chef de projet MES, SI & OT',
+  'hero.tagline':
+    "Je pilote le déploiement du standard Ignition, de la conception à l'architecture logicielle et au modèle de données, en faisant le lien entre les services techniques et l'intégrateur. Côté SI, je gère l'infrastructure Linux, les déploiements Docker et la sécurité réseau.",
+  'hero.cta.journey': 'Mon parcours',
+  'hero.cta.projects': 'Mes projets',
+  'hero.cv': 'Télécharger mon CV',
+
+  'about.title': 'À propos',
+  'about.description':
+    "Ingénieur diplômé de Polytech Nancy (Systèmes et Technologies de l'Information), je suis chef de projet MES, SI & OT à la DSI de Saft Poitiers en tant que consultant Akkodis. Trois années d'apprentissage sur le site m'ont donné une double lecture : les contraintes du terrain industriel et les exigences d'un système d'information.",
+  'about.location': 'Poitiers, France',
+
+  'journey.label': 'Expérience & formation',
+  'journey.title': 'Mon parcours',
+  'journey.subtitle': 'Expériences professionnelles, formation et engagements',
+  'journey.filter.all': 'Tout',
+  'journey.filter.work': 'Expériences',
+  'journey.filter.education': 'Formation',
+  'journey.filter.extra': 'Engagements',
+
+  'skills.label': 'Expertise',
+  'skills.title': 'Compétences',
+  'skills.subtitle': 'Les outils que je manie au quotidien',
+  'skills.matrix': 'Échelle de niveau',
+  'skills.level.1': 'Débutant',
+  'skills.level.1.desc': "Connaît les principes fondamentaux, a besoin d'encadrement.",
+  'skills.level.2': 'Intermédiaire',
+  'skills.level.2.desc': 'Cas simples ou standards, autonomie partielle.',
+  'skills.level.3': 'Confirmé',
+  'skills.level.3.desc': 'Autonome dans la plupart des situations.',
+  'skills.level.4': 'Avancé',
+  'skills.level.4.desc': 'Résout des problèmes complexes, optimise, conseille.',
+  'skills.level.5': 'Référent',
+  'skills.level.5.desc': 'Définit les standards, forme les autres, pilote.',
+  'skills.cat.languages': 'Langages',
+  'skills.cat.frameworks': 'Frameworks & librairies',
+  'skills.cat.industry': 'Industrie & systèmes',
+  'skills.cat.design': 'Design',
+  'skills.beyond': 'Au-delà du code',
+  'skills.beyond.languages': 'Langues',
+  'skills.beyond.languages.1': 'Français : langue maternelle',
+  'skills.beyond.languages.2': 'Anglais : B2 (TOEIC 880)',
+  'skills.beyond.ctf': 'Cybersécurité',
+  'skills.beyond.ctf.1': 'CTF RhinTech 2025 : 4ᵉ',
+  'skills.beyond.ctf.2': 'CTF TRACS 2025 : 10ᵉ / 120 équipes',
+  'skills.beyond.sport': 'Sport',
+  'skills.beyond.sport.1': 'Cyclotourisme & voyages itinérants',
+  'skills.beyond.sport.2': 'Handball : 8 ans en club',
+
+  'projects.label': 'Réalisations',
+  'projects.title': 'Projets',
+  'projects.subtitle': 'Quelques réalisations personnelles et de formation',
+  'projects.all': 'Tous',
+  'projects.code': 'Code',
+  'projects.figma': 'Figma',
+  'projects.live': 'Voir',
+  'projects.tag.personal': 'Perso',
+  'projects.tag.education': 'Formation',
+
+  'contact.label': 'Prise de contact',
+  'contact.title': 'Contact',
+  'contact.subtitle': 'Un projet, une collaboration ou un échange ? Je serais ravi d’en discuter.',
+  'contact.pitch': 'Travaillons ensemble',
+  'contact.pitchText':
+    'Je réponds rapidement, en français comme en anglais. L’email reste le moyen le plus direct ; LinkedIn fonctionne également.',
+  'contact.cta': 'Envoyer un email',
+  'contact.email': 'Email',
+  'contact.phone': 'Téléphone',
+  'contact.copy': "Copier l'adresse email",
+  'contact.copied': 'Copié !',
+  'contact.social': 'Réseaux',
+
+  'footer.tagline': 'Site conçu et développé par mes soins.',
+  'footer.rights': 'Tous droits réservés.',
+  'footer.nav': 'Navigation',
+
+  'notFound.title': 'Page introuvable',
+  'notFound.text': "Cette page n'existe pas ou a été déplacée.",
+  'notFound.cta': "Retour à l'accueil",
+};
+
+const en: Record<keyof typeof fr, string> = {
+  'seo.title': 'Auguste Lacheteau | Engineer, MES, IT & OT Project Manager',
+  'seo.description':
+    'Auguste Lacheteau, Polytech Nancy graduate engineer, MES, IT & OT project manager at Saft Poitiers (Akkodis consultant): Ignition standard, software architecture, data modelling, Linux and Docker infrastructure.',
+  'seo.jobTitle': 'MES, IT & OT Project Manager',
+  'seo.notFoundTitle': 'Page not found | Auguste Lacheteau',
+
+  'a11y.skip': 'Skip to content',
+  'a11y.menu': 'Open menu',
+  'a11y.closeMenu': 'Close menu',
+  'a11y.language': 'Change language',
+  'a11y.backToTop': 'Back to top',
+  'a11y.home': 'Home',
+
+  'nav.journey': 'journey',
+  'nav.skills': 'skills',
+  'nav.projects': 'projects',
+  'nav.contact': 'contact',
+
+  'hero.status': 'Akkodis consultant · Saft Poitiers IT department',
+  'hero.title': 'Engineer · MES, IT & OT Project Manager',
+  'hero.tagline':
+    'I lead the rollout of the Ignition standard, from design to software architecture and data model, acting as the link between technical services and the integrator. On the IT side, I manage Linux infrastructure, Docker deployments and network security.',
+  'hero.cta.journey': 'My journey',
+  'hero.cta.projects': 'My projects',
+  'hero.cv': 'Download my resume',
+
+  'about.title': 'About me',
+  'about.description':
+    'Graduate engineer from Polytech Nancy (Information Systems & Technology), I am the MES, IT & OT project manager in the IT department of Saft Poitiers as an Akkodis consultant. Three years of apprenticeship on site gave me a dual perspective: the constraints of the factory floor and the demands of an information system.',
+  'about.location': 'Poitiers, France',
+
+  'journey.label': 'Experience & education',
+  'journey.title': 'My journey',
+  'journey.subtitle': 'Professional experience, education and involvement',
+  'journey.filter.all': 'All',
+  'journey.filter.work': 'Experience',
+  'journey.filter.education': 'Education',
+  'journey.filter.extra': 'Involvement',
+
+  'skills.label': 'Expertise',
+  'skills.title': 'Skills',
+  'skills.subtitle': 'The tools I use every day',
+  'skills.matrix': 'Level scale',
+  'skills.level.1': 'Beginner',
+  'skills.level.1.desc': 'Knows the fundamentals, needs guidance.',
+  'skills.level.2': 'Intermediate',
+  'skills.level.2.desc': 'Simple or standard cases, partial autonomy.',
+  'skills.level.3': 'Confirmed',
+  'skills.level.3.desc': 'Autonomous in most situations.',
+  'skills.level.4': 'Advanced',
+  'skills.level.4.desc': 'Solves complex problems, optimizes, advises.',
+  'skills.level.5': 'Expert',
+  'skills.level.5.desc': 'Sets standards, trains others, leads.',
+  'skills.cat.languages': 'Languages',
+  'skills.cat.frameworks': 'Frameworks & libraries',
+  'skills.cat.industry': 'Industry & systems',
+  'skills.cat.design': 'Design',
+  'skills.beyond': 'Beyond code',
+  'skills.beyond.languages': 'Languages',
+  'skills.beyond.languages.1': 'French: native',
+  'skills.beyond.languages.2': 'English: B2 (TOEIC 880)',
+  'skills.beyond.ctf': 'Cybersecurity',
+  'skills.beyond.ctf.1': 'RhinTech CTF 2025: 4th',
+  'skills.beyond.ctf.2': 'TRACS CTF 2025: 10th / 120 teams',
+  'skills.beyond.sport': 'Sport',
+  'skills.beyond.sport.1': 'Bike touring & long-distance trips',
+  'skills.beyond.sport.2': 'Handball : 8 years in a club',
+
+  'projects.label': 'Work',
+  'projects.title': 'Projects',
+  'projects.subtitle': 'A few personal and school projects',
+  'projects.all': 'All',
+  'projects.code': 'Code',
+  'projects.figma': 'Figma',
+  'projects.live': 'Open',
+  'projects.tag.personal': 'Personal',
+  'projects.tag.education': 'Education',
+
+  'contact.label': 'Get in touch',
+  'contact.title': 'Contact',
+  'contact.subtitle': 'A project, a collaboration or a conversation? I would be glad to talk.',
+  'contact.pitch': 'Let’s work together',
+  'contact.pitchText': 'I reply quickly, in French or English. Email is the most direct way; LinkedIn works as well.',
+  'contact.cta': 'Send an email',
+  'contact.email': 'Email',
+  'contact.phone': 'Phone',
+  'contact.copy': 'Copy email address',
+  'contact.copied': 'Copied!',
+  'contact.social': 'Networks',
+
+  'footer.tagline': 'Website designed and built by myself.',
+  'footer.rights': 'All rights reserved.',
+  'footer.nav': 'Navigation',
+
+  'notFound.title': 'Page not found',
+  'notFound.text': "This page doesn't exist or has been moved.",
+  'notFound.cta': 'Back to home',
+};
+
+export type TranslationKey = keyof typeof fr;
+export const translations: Record<Language, Record<TranslationKey, string>> = { fr, en };
+
+export const languagePath: Record<Language, string> = { fr: '/', en: '/en/' };

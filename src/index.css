@@ -1,217 +1,142 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@fontsource/rubik-one/400.css';
+@import '@fontsource-variable/roboto-mono';
+@import 'tailwindcss';
 
-@import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap');
-
-/* Define the class for the Regular (400) weight */
-.libre-bodoni-regular {
-  font-family: "Libre Bodoni", serif;
-  font-optical-sizing: auto;
-  font-weight: 400; /* Replaced <weight> with a numerical value */
-  font-style: normal;
-}
-
-.libre-bodoni-bold {
-  font-family: "Libre Bodoni", serif;
-  font-optical-sizing: auto;
-  font-weight: 700; /* Replaced <weight> with a numerical value */
-  font-style: normal;
-}
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-@custom-variant dark (&:is(.dark *));
+/* ===== Brand palette (CroustyLab guideline) ===== */
 :root {
-  --font-size: 16px;
-  --background: #F6FAFE;
-  --foreground: oklch(0.145 0 0);
-  --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
-  --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
-  --input: transparent;
-  --input-background: #f3f3f5;
-  --switch-background: #cbced4;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  --cream: #eeeae0;
+  --cream-2: #e7e1d3;
+  --cream-3: #d9d0ba;
+  --paper: #f5f2ea;
+  --ink: #1b2125;
+  --slate-1: #2c373c;
+  --slate-3: #4d6169;
+  --brick: #a44334;
+  --brick-dark: #8a3628;
+  --brick-light: #d0786b;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  /* unDraw illustrations */
+  --ill-accent: var(--brick);
+  --ill-ink: var(--ink);
+  --ill-soft: var(--cream-3);
+  --ill-soft-2: #e0d9c7;
+  --ill-paper: #f7f4ec;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-input-background: var(--input-background);
-  --color-switch-background: var(--switch-background);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-bg: var(--cream);
+  --color-surface: var(--paper);
+  --color-surface-2: var(--cream-2);
+  --color-fg: var(--ink);
+  --color-muted-fg: var(--slate-3);
+  --color-primary: var(--brick);
+  --color-primary-dark: var(--brick-dark);
+  --color-primary-fg: var(--cream);
+  --color-line: var(--ink);
+  --color-ink: var(--ink);
+  --color-cream: var(--cream);
+  --color-cream-3: var(--cream-3);
+  --color-slate: var(--slate-3);
+  --color-slate-1: var(--slate-1);
+  --color-brick-light: var(--brick-light);
+
+  --font-display: 'Rubik One', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono Variable', ui-monospace, monospace;
+
+  --radius-brutal-sm: 8px;
+  --radius-brutal-md: 12px;
+  --radius-brutal-lg: 16px;
+
+  /* Hard, square shadows: no blur, no spread */
+  --shadow-brutal-sm: 2px 2px 0 0 var(--ink);
+  --shadow-brutal-md: 3px 3px 0 0 var(--ink);
+  --shadow-brutal-lg: 4px 4px 0 0 var(--ink);
+  --shadow-brutal-xl: 6px 6px 0 0 var(--ink);
 }
 
-
-
-/**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
- */
 @layer base {
-  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
-    h1 {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h3 {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h4 {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    p {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
-
-    label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    input {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    background: var(--cream);
+    color-scheme: light;
+  }
+  body {
+    @apply bg-bg text-fg font-mono antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display font-normal;
+    line-height: 1.15;
+  }
+  ::selection {
+    background: var(--brick);
+    color: var(--cream);
+  }
+  :focus-visible {
+    outline: 3px solid var(--brick);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
-html {
-  font-size: var(--font-size);
-  background-color: #F6FAFE;
+@layer components {
+  /*
+   * Tactile press for every clickable element: the element sits above its
+   * hard shadow, slides half-way onto it on hover, and lands exactly where
+   * the shadow was when pressed (shadow gone).
+   * --press sets the shadow size, --press-color its colour.
+   */
+  .press {
+    --press: 4px;
+    box-shadow: var(--press) var(--press) 0 0 var(--press-color, var(--ink));
+    transition:
+      translate 120ms ease-out,
+      box-shadow 120ms ease-out,
+      background-color 150ms;
+  }
+  .press-sm {
+    --press: 3px;
+  }
+  .press:hover {
+    translate: calc(var(--press) / 2) calc(var(--press) / 2);
+    box-shadow: calc(var(--press) / 2) calc(var(--press) / 2) 0 0 var(--press-color, var(--ink));
+  }
+  .press:active,
+  .press[aria-pressed='true'] {
+    translate: var(--press) var(--press);
+    box-shadow: 0 0 0 0 var(--press-color, var(--ink));
+  }
+
+  /* Engineering-paper grid, as on a technical drawing */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--ink) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--ink) 7%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--cream) 12%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--cream) 12%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  /* Diagonal hatching, used as a texture accent */
+  .bg-hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--ink) 10%, transparent) 0 1px,
+      transparent 1px 9px
+    );
+  }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

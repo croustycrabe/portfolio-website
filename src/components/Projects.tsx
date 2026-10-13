@@ -1,165 +1,130 @@
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ArrowSquareOutIcon, FigmaLogoIcon, GithubLogoIcon } from '@phosphor-icons/react';
 import { useI18n } from '../contexts/i18n-context';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { ExternalLink, Github,Figma } from 'lucide-react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { projects, type Project } from '../data/content';
+import { ButtonLink, Chip, SectionHeading } from './primitives';
+import ProjectsIllustration from '../assets/illustrations/projects.svg?react';
+import RustApiIllustration from '../assets/illustrations/rust-api.svg?react';
+import ChatAppIllustration from '../assets/illustrations/chat-app.svg?react';
 
-interface Project {
-  title: { fr: string; en: string };
-  description: { fr: string; en: string };
-  tags: string[];
-  image: string;
-  githubUrl?: string;
-  liveUrl?: string;
-  figmaUrl?:string;
+const coverIllustrations = {
+  'rust-api': RustApiIllustration,
+  'chat-app': ChatAppIllustration,
+};
+
+function Cover({ project, alt }: { project: Project; alt: string }) {
+  if (typeof project.cover === 'object') {
+    return (
+      <img
+        src={project.cover.image}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+      />
+    );
+  }
+  const Illustration = coverIllustrations[project.cover];
+  return (
+    <Illustration
+      role="img"
+      aria-label={alt}
+      className="h-full w-full p-6 transition-transform duration-500 group-hover:scale-105"
+    />
+  );
 }
 
-const projectsData: Project[] = [
-  {
-    title: { fr: 'API HTTP en Rust', en: 'Rust HTTP API' },
-    description: {
-      fr: 'API HTTP dévellopé en Rust avec les librairies Tokio et Axum.',
-      en: 'Rust HTTP API made with Tokio and Axum.',
-    },
-    tags: ['Rust',"Education"],
-    image: 'https://github.com/rust-lang/rust-artwork/blob/master/logo/rust-logo-512x512-blk.png?raw=true',
-    githubUrl: 'https://github.com/avagst3/rust_api',
-  },
-  {
-    title: { fr: 'Design application de chat', en: 'Chat App design' },
-    description: {
-      fr: "Design d'une application de chat pour un projet personnel.",
-      en: "Chat app design for personal project.",
-    },
-    tags: ['Figma',"Personal"],
-    image: 'https://images.unsplash.com/photo-1602576666092-bf6447a729fc?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    figmaUrl: 'https://www.figma.com/community/file/1557706229756083214',
-  },
-  {
-    title: { fr: 'Editeur de programme en no code', en: 'No code program editor' },
-    description: {
-      fr: "Création d'un package front-end permettant de créer des programmes en no-code à la manière de Simulink.",
-      en: "Creation of a front-end package allowing to create programs in no-code like Simulink.",
-    },
-    tags: ['Flutter',"Personal"],
-    image: 'https://github.com/avagst3/node_program_editor/raw/main/image.png',
-    githubUrl: 'https://github.com/avagst3/node_program_editor',
-  },
-];
-
 export function Projects() {
-  const { language, t } = useI18n();
-  const [selectedTag, setSelectedTag] = useState<string>('all');
+  const { l, t } = useI18n();
+  const [selected, setSelected] = useState<string>('all');
 
-  // Extract all unique tags
-  const allTags = Array.from(
-    new Set(projectsData.flatMap((project) => project.tags))
-  );
-
-  // Filter projects based on selected tag
-  const filteredProjects =
-    selectedTag === 'all'
-      ? projectsData
-      : projectsData.filter((project) => project.tags.includes(selectedTag));
+  const kindLabel = (kind: Project['kind']) => t(`projects.tag.${kind}`);
+  const allTags = Array.from(new Set(projects.flatMap((p) => [...p.tech, kindLabel(p.kind)])));
+  const filtered =
+    selected === 'all' ? projects : projects.filter((p) => p.tech.includes(selected) || kindLabel(p.kind) === selected);
 
   return (
-    <section id="projects" className="py-20 px-4 bg-secondary/30">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="mb-2 text-[#2F6B7C] libre-bodoni-regular">{t('projects.title')}</h2>
-          <p className="text-muted-foreground ">{t('projects.subtitle')}</p>
-        </div>
+    <section id="projects" className="bg-grid relative border-b-2 border-ink px-4 py-24 md:py-32" aria-labelledby="projects-title">
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading
+          id="projects-title"
+          index="03"
+          label={t('projects.label')}
+          title={t('projects.title')}
+          subtitle={t('projects.subtitle')}
+          Illustration={ProjectsIllustration}
+        />
 
-        {/* Tag filters */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          <Badge
-            variant={selectedTag === 'all' ? 'default' : 'outline'}
-            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-            onClick={() => setSelectedTag('all')}
-          >
+        <div className="mb-12 flex flex-wrap gap-3" role="group" aria-label={t('projects.title')}>
+          <Chip active={selected === 'all'} onClick={() => setSelected('all')}>
             {t('projects.all')}
-          </Badge>
+          </Chip>
           {allTags.map((tag) => (
-            <Badge
-              key={tag}
-              variant={selectedTag === tag ? 'default' : 'outline'}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-              onClick={() => setSelectedTag(tag)}
-            >
+            <Chip key={tag} active={selected === tag} onClick={() => setSelected(tag)}>
               {tag}
-            </Badge>
+            </Chip>
           ))}
         </div>
 
-        {/* Projects grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project, index) => (
-            <div
-              key={index}
-              className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow group"
-            >
-              <div className="relative h-48 overflow-hidden">
-                <ImageWithFallback
-                  src={project.image}
-                  alt={project.title[language]}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              
-              <div className="p-6">
-                <h3 className="mb-2">{project.title[language]}</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {project.description[language]}
-                </p>
+        <motion.ul layout className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project, i) => (
+              <motion.li
+                layout
+                key={project.title.en}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+              >
+                <article className="group flex h-full flex-col overflow-hidden rounded-brutal-md border-2 border-ink bg-surface shadow-brutal-xl">
+                  <div className="bg-hatch relative h-52 overflow-hidden border-b-2 border-ink">
+                    <Cover project={project} alt={l(project.title)} />
+                    <span className="absolute top-3 right-3 rounded-brutal-sm border-2 border-ink bg-ink px-2 py-0.5 text-xs font-bold text-cream">
+                      {kindLabel(project.kind)}
+                    </span>
+                  </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-lg">{l(project.title)}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-fg/75">{l(project.description)}</p>
 
-                {/* Links */}
-                <div className="flex gap-3">
-                  {project.githubUrl && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => window.open(project.githubUrl, '_blank')}
-                    >
-                      <Github size={16} className="mr-2" />
-                      Code
-                    </Button>
-                  )}
-                  {project.liveUrl && (
-                    <Button
-                      size="sm"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
-                    >
-                      <ExternalLink size={16} className="mr-2" />
-                      {t('projects.viewProject')}
-                    </Button>
-                  )}
-                  {
-                    project.figmaUrl && (
-                      <Button
-                      variant={"outline"}
-                      size="sm"
-                      onClick={() => window.open(project.figmaUrl, '_blank')}
-                      >
-                        <Figma size={16} className="mr-2" />
-                        Figma community
-                      </Button>
-                    )
-                  }
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                    <ul className="mt-4 flex flex-wrap gap-2">
+                      {project.tech.map((tech) => (
+                        <li key={tech} className="rounded-brutal-sm border-2 border-ink bg-surface-2 px-2.5 py-0.5 text-xs font-medium">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      {project.githubUrl && (
+                        <ButtonLink href={project.githubUrl} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
+                          <GithubLogoIcon size={16} weight="bold" />
+                          {t('projects.code')}
+                        </ButtonLink>
+                      )}
+                      {project.figmaUrl && (
+                        <ButtonLink href={project.figmaUrl} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
+                          <FigmaLogoIcon size={16} weight="bold" />
+                          {t('projects.figma')}
+                        </ButtonLink>
+                      )}
+                      {project.liveUrl && (
+                        <ButtonLink href={project.liveUrl} target="_blank" rel="noopener noreferrer" size="sm">
+                          <ArrowSquareOutIcon size={16} weight="bold" />
+                          {t('projects.live')}
+                        </ButtonLink>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
       </div>
     </section>
   );
