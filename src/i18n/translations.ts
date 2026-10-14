@@ -20,7 +20,7 @@ const fr = {
   'nav.projects': 'projets',
   'nav.contact': 'contact',
 
-  'hero.status': 'Consultant Akkodis · DSI de Saft Poitiers',
+  'hero.status': 'Consultant Akkodis · Service informatique de Saft Poitiers',
   'hero.title': 'Ingénieur · Chef de projet MES, SI & OT',
   'hero.tagline':
     "Je pilote le déploiement du standard Ignition, de la conception à l'architecture logicielle et au modèle de données, en faisant le lien entre les services techniques et l'intégrateur. Côté SI, je gère l'infrastructure Linux, les déploiements Docker et la sécurité réseau.",
@@ -30,7 +30,7 @@ const fr = {
 
   'about.title': 'À propos',
   'about.description':
-    "Ingénieur diplômé de Polytech Nancy (Systèmes et Technologies de l'Information), je suis chef de projet MES, SI & OT à la DSI de Saft Poitiers en tant que consultant Akkodis. Trois années d'apprentissage sur le site m'ont donné une double lecture : les contraintes du terrain industriel et les exigences d'un système d'information.",
+    "Ingénieur diplômé de Polytech Nancy (Systèmes et Technologies de l'Information), je suis chef de projet MES, SI & OT au service informatique de Saft Poitiers en tant que consultant Akkodis. Trois années d'apprentissage sur le site m'ont donné une double lecture : les contraintes du terrain industriel et les exigences d'un système d'information.",
   'about.location': 'Poitiers, France',
 
   'journey.label': 'Expérience & formation',
