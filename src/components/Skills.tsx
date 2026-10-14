@@ -10,21 +10,26 @@ const levels = [1, 2, 3, 4, 5] as const;
 
 function LevelBar({ level, animate = true }: { level: number; animate?: boolean }) {
   return (
-    <span className="flex gap-1" aria-hidden="true">
+    // Observe the bar itself: a scaleX(0) child has a zero-area box and may never intersect.
+    <motion.span
+      className="flex gap-1"
+      aria-hidden="true"
+      initial={animate ? 'hidden' : false}
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
       {levels.map((i) => (
         <span key={i} className="relative h-3.5 w-3.5 overflow-hidden rounded-[3px] border-2 border-ink bg-surface-2">
           {i <= level && (
             <motion.span
               className="absolute inset-0 origin-left bg-primary"
-              initial={animate ? { scaleX: 0 } : false}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
+              variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
               transition={{ duration: 0.25, delay: 0.15 + i * 0.08 }}
             />
           )}
         </span>
       ))}
-    </span>
+    </motion.span>
   );
 }
 
