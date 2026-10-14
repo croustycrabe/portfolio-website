@@ -26,7 +26,7 @@ export const journey: JourneyItem[] = [
     period: { fr: 'Depuis septembre 2026', en: 'Since September 2026' },
     bullets: [
       {
-        fr: 'Consultant Akkodis au sein de la DSI de Saft Poitiers',
+        fr: 'Consultant Akkodis au sein du service informatique de Saft Poitiers',
         en: 'Akkodis consultant within the IT department of Saft Poitiers',
       },
       {
