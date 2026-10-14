@@ -68,6 +68,32 @@
     @apply font-display font-normal;
     line-height: 1.15;
   }
+  /* Scrollbar: Firefox uses the standard props, WebKit/Blink the pseudo-elements */
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-color: var(--brick) var(--cream-2);
+      scrollbar-width: auto;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--cream-2);
+    border-left: 2px solid var(--ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--brick);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brick-dark);
+  }
+  ::-webkit-scrollbar-corner {
+    background: var(--cream-2);
+  }
   ::selection {
     background: var(--brick);
     color: var(--cream);
